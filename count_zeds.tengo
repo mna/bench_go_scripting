@@ -1,0 +1,23 @@
+os := import("os")
+fmt := import("fmt")
+text := import("text")
+
+buf := bytes(100)
+
+f := os.open("/usr/share/dict/words")
+r := text.re_compile("[Zz]+")
+
+zeds := 0
+for n := f.read(buf); n && n > 0; n = f.read(buf) {
+	// resulting count is incorrect, not sure why...
+	matches := r.find(buf[:n])
+	for ms in matches {
+		for v in ms {
+			zeds += len(v.text)
+		}
+	}
+}
+
+f.close()
+
+fmt.println(zeds)

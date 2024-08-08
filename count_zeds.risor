@@ -1,0 +1,16 @@
+buf := byte_slice(100)
+
+f := os.open("/usr/share/dict/words")
+r := regexp.compile("[zZ]+")
+
+zeds := 0
+for data := f.read(buf); len(data) > 0; data = f.read(buf) {
+	matches := r.find_all(data)
+	for _, m := range matches {
+		zeds += len(m)
+	}
+}
+
+f.close()
+
+print(zeds)
